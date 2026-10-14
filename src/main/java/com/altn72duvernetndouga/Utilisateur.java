@@ -6,49 +6,37 @@ import jakarta.persistence.*;
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(nullable = false, unique = true)
-    private String login;
+    @Column(name = "username", nullable = false, length = 100)
+    private String username;
 
-    @Column(nullable = false)
-    private String motDePasseHache;
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
-    @Column(nullable = false)
-    private String prenom;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Profil profil;
-
-    protected Utilisateur() {
-    }
-
-    public Utilisateur(String login, String motDePasseHache, String prenom, Profil profil) {
-        this.login = login;
-        this.motDePasseHache = motDePasseHache;
-        this.prenom = prenom;
-        this.profil = profil;
-    }
-
-    public Profil getProfil() {
-        return profil;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public String getMotDePasseHache() {
-        return motDePasseHache;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
