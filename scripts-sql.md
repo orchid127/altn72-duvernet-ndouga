@@ -14,6 +14,12 @@ CREATE TABLE Equipement (
     FOREIGN KEY (id_station) REFERENCES Station(id_station)
 );
 
+CREATE TABLE Prestataire (
+id_prestataire INT AUTO_INCREMENT PRIMARY KEY,
+nom VARCHAR(100) NOT NULL,
+mail VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE Incident (
     id_incident INT AUTO_INCREMENT PRIMARY KEY,
     id_equipement INT NOT NULL,
@@ -24,12 +30,6 @@ CREATE TABLE Incident (
     date_resolution DATETIME,
     FOREIGN KEY (id_equipement) REFERENCES Equipement(id_equipement),
     FOREIGN KEY (id_prestataire) REFERENCES Prestataire(id_prestataire)
-);
-
-CREATE TABLE Prestataire (
-    id_prestataire INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    mail VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Evaluation (
