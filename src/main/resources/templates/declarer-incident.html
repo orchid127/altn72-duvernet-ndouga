@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Déclarer un incident</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1>Déclarer un incident</h1>
+
+    <form th:action="@{/incidents}" th:object="${formulaire}" method="post">
+        <label for="equipementId">Équipement</label>
+        <select th:field="*{equipementId}">
+            <option value="">Choisir un équipement</option>
+            <option th:each="equipement : ${equipements}"
+                    th:value="${equipement.id}"
+                    th:text="|${equipement.reference} - ${equipement.description}|">
+                ASC-001 - Ascenseur quai 1
+            </option>
+        </select>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('equipementId')}"
+           th:errors="*{equipementId}">Erreur équipement</p>
+
+        <label for="description">Description</label>
+        <textarea th:field="*{description}" rows="4"></textarea>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('description')}"
+           th:errors="*{description}">Erreur description</p>
+
+        <button type="submit">Déclarer</button>
+    </form>
+</main>
+</body>
+</html>

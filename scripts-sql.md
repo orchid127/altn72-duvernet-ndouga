@@ -47,3 +47,16 @@ CREATE TABLE Utilisateur (
     prenom VARCHAR(100) NOT NULL,
     profil VARCHAR(100)
 );
+
+INSERT INTO Station (nom_station)
+VALUES ('Gare du Nord'),
+('Châtelet');
+
+INSERT INTO Equipement (reference, description, type, id_station, etat_fontionnement)
+VALUES ('ASC-GDN-01', 'Ascenseur quai 1', 'Ascenseur', 1, 'En marche'),
+('ESC-GDN-01', 'Escalator sortie principale', 'Escalator', 1, 'En panne'),
+('POR-CHT-01', 'Portique entrée nord', 'Portique', 2, 'En marche'),
+('DIS-CHT-01', 'Distributeur hall central', 'Distributeur ticket', 2, 'En cours de réparation');
+
+SELECT * FROM Station;
+SELECT * FROM Equipement;

@@ -32,6 +32,21 @@ public class Incident {
     @Column(name = "date_resolution")
     private Instant dateResolution;
 
+
+    protected Incident() {
+    }
+
+    /**
+     * Déclare un incident : il démarre sans prestataire ni date de résolution (RG1).
+     */
+    public Incident(Equipement equipement, String description, Instant dateOuverture, String statut) {
+        this.idEquipement = equipement;
+        this.description = description;
+        this.dateOuverture = dateOuverture;
+        this.statut = statut;
+    }
+
+
     public Integer getId() {
         return id;
     }
