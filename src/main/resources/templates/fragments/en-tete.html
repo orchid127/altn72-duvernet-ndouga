@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="enTete" class="en-tete">
+    <a class="nom-application" th:href="@{/}">Supervision du réseau</a>
+
+    <div class="utilisateur" th:if="${utilisateurConnecte != null}">
+        Bonjour <span th:text="${utilisateurConnecte.prenom}">Prénom</span>
+        (<span th:text="${utilisateurConnecte.profil}">profil</span>) |
+        <form th:action="@{/deconnexion}" method="post" class="form-deconnexion">
+            <button type="submit" class="bouton-lien">Déconnectez-vous</button>
+        </form>
+    </div>
+</header>
+</body>
+</html>

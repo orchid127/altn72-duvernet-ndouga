@@ -10,7 +10,7 @@ public class Utilisateur {
     @Column(name = "id_connexion", nullable = false)
     private Integer id;
 
-    @Column(name = "mot_de_passe", nullable = false, length = 100)
+    @Column(name = "mot_de_passe", nullable = false, length = 100, unique = true)
     private String motDePasse;
 
     @Column(name = "prenom", nullable = false, length = 100)
@@ -18,6 +18,16 @@ public class Utilisateur {
 
     @Column(name = "profil", length = 100)
     private String profil;
+
+    protected Utilisateur() {
+    }
+
+    public Utilisateur(Integer id, String motDePasse, String prenom, String profil) {
+        this.id = id;
+        this.motDePasse = motDePasse;
+        this.prenom = prenom;
+        this.profil = profil;
+    }
 
     public Integer getId() {
         return id;

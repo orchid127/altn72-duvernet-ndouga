@@ -1,4 +1,8 @@
 package com.altn72duvernetndouga.exception;
 
-public class ExceptionMetier {
+public abstract class ExceptionMetier extends RuntimeException {
+
+    protected ExceptionMetier(String message) {
+        super(message);
+    }
 }
