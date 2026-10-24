@@ -1,6 +1,7 @@
 package com.altn72duvernetndouga.service;
 
 
+import com.altn72duvernetndouga.exception.IncidentIntrouvableException;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.repository.IncidentRepository;
@@ -27,5 +28,9 @@ public class IncidentService {
         Equipement equipement = equipementService.trouverParIdentifiant(equipementId);
         Incident incident = new Incident(equipement, description, Instant.now(clock),STATUT_NON_AFFECTE);
         return incidentRepository.save(incident);
+    }
+
+    public Incident trouverParIdentifiant(Integer id){
+        return incidentRepository.findById(id).orElseThrow(()->new IncidentIntrouvableException(id));
     }
 }

@@ -2,6 +2,8 @@ package com.altn72duvernetndouga.modele;
 
 import jakarta.persistence.*;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 
 @Entity
@@ -46,61 +48,80 @@ public class Incident {
         this.statut = statut;
     }
 
-
-    public Integer getId() {
-        return id;
+    public boolean estResolu() {
+        if (dateResolution != null) {
+            return true;
+        }
+        return false;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public long dureeOuvertureEnHeures(Clock horloge) {
+        Instant fin;
+        if (estResolu()) {
+            fin = dateResolution;
+        } else {
+            fin = Instant.now(horloge);
+        }
+        return Duration.between(dateOuverture, fin).toHours();
+
     }
 
-    public Equipement getIdEquipement() {
-        return idEquipement;
-    }
 
-    public void setIdEquipement(Equipement idEquipement) {
-        this.idEquipement = idEquipement;
-    }
 
-    public String getDescription() {
-        return description;
-    }
+public Integer getId() {
+    return id;
+}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+public void setId(Integer id) {
+    this.id = id;
+}
 
-    public Instant getDateOuverture() {
-        return dateOuverture;
-    }
+public Equipement getIdEquipement() {
+    return idEquipement;
+}
 
-    public void setDateOuverture(Instant dateOuverture) {
-        this.dateOuverture = dateOuverture;
-    }
+public void setIdEquipement(Equipement idEquipement) {
+    this.idEquipement = idEquipement;
+}
 
-    public String getStatut() {
-        return statut;
-    }
+public String getDescription() {
+    return description;
+}
 
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
+public void setDescription(String description) {
+    this.description = description;
+}
 
-    public Prestataire getIdPrestataire() {
-        return idPrestataire;
-    }
+public Instant getDateOuverture() {
+    return dateOuverture;
+}
 
-    public void setIdPrestataire(Prestataire idPrestataire) {
-        this.idPrestataire = idPrestataire;
-    }
+public void setDateOuverture(Instant dateOuverture) {
+    this.dateOuverture = dateOuverture;
+}
 
-    public Instant getDateResolution() {
-        return dateResolution;
-    }
+public String getStatut() {
+    return statut;
+}
 
-    public void setDateResolution(Instant dateResolution) {
-        this.dateResolution = dateResolution;
-    }
+public void setStatut(String statut) {
+    this.statut = statut;
+}
+
+public Prestataire getIdPrestataire() {
+    return idPrestataire;
+}
+
+public void setIdPrestataire(Prestataire idPrestataire) {
+    this.idPrestataire = idPrestataire;
+}
+
+public Instant getDateResolution() {
+    return dateResolution;
+}
+
+public void setDateResolution(Instant dateResolution) {
+    this.dateResolution = dateResolution;
+}
 
 }

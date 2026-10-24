@@ -2,7 +2,9 @@ package com.altn72duvernetndouga.controleur;
 
 import com.altn72duvernetndouga.formulaire.DeclarationIncidentForm;
 import com.altn72duvernetndouga.modele.Equipement;
+import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.service.EquipementService;
+import com.altn72duvernetndouga.service.EvaluationService;
 import com.altn72duvernetndouga.service.IncidentService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -10,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.Clock;
 import java.util.List;
 
 /**
@@ -22,10 +26,14 @@ public class IncidentController {
 
     private final IncidentService incidentService;
     private final EquipementService equipementService;
+    private final EvaluationService evaluationService;
+    private Clock horloge;
 
-    public IncidentController(IncidentService incidentService, EquipementService equipementService) {
+
+    public IncidentController(IncidentService incidentService, EquipementService equipementService, EvaluationService evaluationService) {
         this.incidentService = incidentService;
         this.equipementService = equipementService;
+        this.evaluationService = evaluationService;
     }
 
     /**
@@ -56,7 +64,21 @@ public class IncidentController {
         if (resultat.hasErrors()) {
             return "declarer-incident";
         }
-        incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
-        return "redirect:/";
+        Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
+        return "redirect:/incidents/" + incident.getId() ;
     }
+
+    /**
+     * Affiche le détail d'un incident : ses informations, sa durée d'ouverture
+     * (calculée à partir de l'heure courante) et son évaluation éventuelle.
+     */
+    @GetMapping("/incidents/{id}")
+    public String afficherDetail(@PathVariable Integer id, Model model) {
+        Incident incident = incidentService.trouverParIdentifiant(id);
+        model.addAttribute("incident", incident);
+        model.addAttribute("dureeEnHeures", incident.dureeOuvertureEnHeures(horloge));
+        model.addAttribute("evaluation", evaluationService.trouverPourIncident(incident).orElse(null));
+        return "incident-detail";
+    }
+
 }
