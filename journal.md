@@ -17,5 +17,7 @@ L'application suit une architecture classique Vue > API Service > Persistance > 
 ## TACHES A FAIRE
 - [ ] Gérer exceptions
 - [ ] Faire classes de tests
-- [ ] Résoudre problème synchro et application.properties
-- [ ] Ajouter variables nevironnements + ajouteur 2e fichier application.properties
+- [ ] Résoudre problème synchro git
+- [x] Corriger application.properties
+- [X] Ajouter variables environnements
+- [ ] ajouter 2e fichier application.properties
