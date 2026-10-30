@@ -3,28 +3,40 @@ package com.altn72duvernetndouga.controleur;
 import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.modele.Prestataire;
 import com.altn72duvernetndouga.service.IncidentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class IncidentControleur {
-    @Autowired
-    private IncidentService incidentService;
+    private final IncidentService incidentService;
+
+    public  IncidentControleur(IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
 
     @GetMapping("/incidents")
-    public List<Incident> listerIncidentsParDate() {
-        return incidentService.listerIncidentsParDate();
+    public ResponseEntity<List<Incident>> listerIncidentsParDate() {
+        List<Incident> response = incidentService.listerIncidentsParDate();
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/incidents/{idIncident}/prestataire")
-    public Incident affecterPrestataireIncident(@PathVariable int idIncident, @RequestBody Prestataire prestataire) {
-        return incidentService.affecterPrestataireIncident(idIncident, prestataire);
+    public ResponseEntity<Incident> affecterPrestataireIncident(@PathVariable int idIncident, @RequestBody Prestataire prestataire) {
+        Incident response = incidentService.affecterPrestataireIncident(idIncident, prestataire);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/incidents/{idIncident}/date-resolution")
-    public Incident enregistrerDateResolution(@PathVariable int idIncident) {
-        return incidentService.enregistrerDateResolutionIncident(idIncident);
+    public ResponseEntity<Incident> enregistrerDateResolution(@PathVariable int idIncident) {
+        Incident response = incidentService.enregistrerDateResolutionIncident(idIncident);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
     }
 }
