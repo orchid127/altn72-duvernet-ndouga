@@ -1,6 +1,7 @@
 package com.altn72duvernetndouga.controleur;
 
 import com.altn72duvernetndouga.formulaire.DeclarationIncidentForm;
+import com.altn72duvernetndouga.formulaire.ModificationIncidentForm;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.service.EquipementService;
@@ -79,6 +80,36 @@ public class IncidentController {
         model.addAttribute("dureeEnHeures", incident.dureeOuvertureEnHeures(horloge));
         model.addAttribute("evaluation", evaluationService.trouverPourIncident(incident).orElse(null));
         return "incident-detail";
+    }
+
+    /**
+     * Affiche le formulaire de modification, pré-rempli avec la description actuelle.
+     */
+    @GetMapping("/incidents/{id}/modifier")
+    public String afficherFormulaireModification(@PathVariable Integer id, Model model) {
+        Incident incident = incidentService.trouverParIdentifiant(id);
+        ModificationIncidentForm formulaire = new ModificationIncidentForm();
+        formulaire.setDescription(incident.getDescription());
+        model.addAttribute("incident", incident);
+        model.addAttribute("formulaire", formulaire);
+        return "modifier-incident";
+    }
+
+    /**
+     * Traite la modification : réaffiche le formulaire s'il est invalide,
+     * sinon enregistre la nouvelle description puis redirige vers le détail de l'incident.
+     */
+    @PostMapping("/incidents/{id}/modifier")
+    public String modifierIncident(@PathVariable Integer id,
+                                   @Valid @ModelAttribute("formulaire") ModificationIncidentForm formulaire,
+                                   BindingResult resultat,
+                                   Model model) {
+        if (resultat.hasErrors()) {
+            model.addAttribute("incident", incidentService.trouverParIdentifiant(id));
+            return "modifier-incident";
+        }
+        incidentService.modifierDescription(id, formulaire.getDescription());
+        return "redirect:/incidents/" + id;
     }
 
 }

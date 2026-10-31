@@ -2,6 +2,7 @@ package com.altn72duvernetndouga.service;
 
 
 import com.altn72duvernetndouga.exception.IncidentIntrouvableException;
+import com.altn72duvernetndouga.exception.IncidentResoluException;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.repository.IncidentRepository;
@@ -32,5 +33,15 @@ public class IncidentService {
 
     public Incident trouverParIdentifiant(Integer id){
         return incidentRepository.findById(id).orElseThrow(()->new IncidentIntrouvableException(id));
+    }
+
+    public Incident modifierDescription(Integer id, String nouvelleDescription){
+        Incident incident = trouverParIdentifiant(id);
+        if (incident.estResolu()){
+            throw new IncidentResoluException(id);
+        }
+        incident.setDescription(nouvelleDescription);
+        return incidentRepository.save(incident);
+
     }
 }
