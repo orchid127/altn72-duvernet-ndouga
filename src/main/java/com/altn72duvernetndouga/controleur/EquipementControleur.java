@@ -24,7 +24,7 @@ public class EquipementControleur {
 
     @GetMapping("/equipements/{id}")
     public ResponseEntity<Equipement> afficherEquipementParId(@PathVariable int id) {
-        Equipement response = equipementService.trouverEquipementParIdentifiant(id);
+        Equipement response = equipementService.trouverParIdentifiant(id);
         if (response == null) {
             return ResponseEntity.notFound().build();
         }
