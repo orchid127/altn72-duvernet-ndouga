@@ -8,28 +8,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Règles d’accès de l’application : tout est protégé sauf la page de connexion
- **/
+ * Règles d'accès de l'application : tout est protégé sauf la page de connexion,
+ * et certaines actions sont réservées au responsable d'exploitation (RG11).
+ */
 @Configuration
 public class SecuriteConfig {
 
     /**
-     * BCrypt ajoute un sel aléatoire : deux mots de passe identiques donnent deux empreintes différente
-     **/
-
+     * BCrypt ajoute un sel aléatoire : deux mots de passe identiques
+     * donnent deux empreintes différentes en base.
+     */
     @Bean
     public PasswordEncoder encodeurMotDePasse() {
         return new BCryptPasswordEncoder();
     }
 
     /**
-     * Définit les pages publiques, la page de connexion et la déconnexion.
-     **/
+     * Définit les pages publiques, celles réservées au responsable, la page de connexion et la déconnexion.
+     * « throws Exception » est imposé par la méthode build() de Spring Security.
+     */
     @Bean
     public SecurityFilterChain filtreSecurite(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(autorisations -> autorisations
                         .requestMatchers("/connexion", "/css/**", "/error").permitAll()
+                        .requestMatchers("/incidents/*/evaluation").hasRole("RESPONSABLE")
                         .anyRequest().authenticated())
                 .formLogin(formulaire -> formulaire
                         .loginPage("/connexion")

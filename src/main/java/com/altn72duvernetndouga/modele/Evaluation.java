@@ -24,6 +24,17 @@ public class Evaluation {
     @Column(name = "date_evaluation", nullable = false)
     private LocalDate dateEvaluation;
 
+    protected Evaluation(){
+
+    }
+
+    public Evaluation(Incident idIncident, Integer note, String commentaire, LocalDate dateEvaluation) {
+        this.idIncident = idIncident;
+        this.note = note;
+        this.commentaire = commentaire;
+        this.dateEvaluation = dateEvaluation;
+    }
+
     public Integer getId() {
         return id;
     }
