@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
  * Pages liées à l'évaluation d'un prestataire après la résolution d'un incident (F10).
  */
 @Controller
-public class EvaluationController {
+public class EvaluationControleur {
 
     private final EvaluationService evaluationService;
     private final IncidentService incidentService;
 
-    public EvaluationController(EvaluationService evaluationService, IncidentService incidentService) {
+    public EvaluationControleur(EvaluationService evaluationService, IncidentService incidentService) {
         this.evaluationService = evaluationService;
         this.incidentService = incidentService;
     }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Détail de l'incident</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1 th:text="|Incident n° ${incident.id}|">Incident n° 1</h1>
+
+    <dl class="fiche">
+        <dt>Description</dt>
+        <dd th:text="${incident.description}">Ascenseur bloqué au deuxième étage</dd>
+
+        <dt>Équipement</dt>
+        <dd th:text="|${incident.idEquipement.reference} - ${incident.idEquipement.description}|">
+            ASC-GDN-01 - Ascenseur quai 1
+        </dd>
+
+        <dt>Station</dt>
+        <dd th:text="${incident.idEquipement.idStation.nomStation}">Gare du Nord</dd>
+
+        <dt>Statut</dt>
+        <dd th:text="${incident.statut}">Non affecté</dd>
+
+        <dt>Ouverture</dt>
+        <dd th:text="${incident.dateOuverture}">2026-11-01T10:00:00Z</dd>
+
+        <dt>Durée d'ouverture</dt>
+        <dd th:text="|${dureeEnHeures} heures|">47 heures</dd>
+
+        <dt>Prestataire</dt>
+        <dd th:if="${incident.idPrestataire != null}" th:text="${incident.idPrestataire.nom}">Ascenseurs Express</dd>
+        <dd th:unless="${incident.idPrestataire != null}">Aucun prestataire</dd>
+
+        <th:block th:if="${incident.estResolu()}">
+            <dt>Résolution</dt>
+            <dd th:text="${incident.dateResolution}">2026-11-03T08:00:00Z</dd>
+        </th:block>
+
+        <dt>Évaluation</dt>
+        <dd th:if="${evaluation != null}">
+            <span th:text="|${evaluation.note} / 5|">4 / 5</span>
+            <span th:if="${evaluation.commentaire != null}" th:text="| - ${evaluation.commentaire}|"> - Intervention rapide</span>
+        </dd>
+        <dd th:unless="${evaluation != null}">Pas encore évaluée</dd>
+    </dl>
+
+    <ul class="actions">
+        <li th:unless="${incident.estResolu()}">
+            <a th:href="@{/incidents/{id}/modifier(id=${incident.id})}">Modifier la description</a>
+        </li>
+        <li th:if="${incident.estResolu() and incident.idPrestataire != null and evaluation == null
+                    and utilisateurConnecte.profil == 'RESPONSABLE'}">
+            <a th:href="@{/incidents/{id}/evaluation(id=${incident.id})}">Évaluer l'intervention</a>
+        </li>
+        <li><a th:href="@{/}">Retour à l'accueil</a></li>
+    </ul>
+</main>
+</body>
+</html>

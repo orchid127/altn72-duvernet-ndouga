@@ -28,13 +28,14 @@ public class IncidentController {
     private final IncidentService incidentService;
     private final EquipementService equipementService;
     private final EvaluationService evaluationService;
-    private Clock horloge;
+    private final Clock horloge;
 
-
-    public IncidentController(IncidentService incidentService, EquipementService equipementService, EvaluationService evaluationService) {
+    public IncidentController(IncidentService incidentService, EquipementService equipementService,
+                              EvaluationService evaluationService, Clock horloge) {
         this.incidentService = incidentService;
         this.equipementService = equipementService;
         this.evaluationService = evaluationService;
+        this.horloge = horloge;
     }
 
     /**

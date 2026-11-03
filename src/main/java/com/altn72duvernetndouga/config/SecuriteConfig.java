@@ -25,6 +25,8 @@ public class SecuriteConfig {
 
     /**
      * Définit les pages publiques, celles réservées au responsable, la page de connexion et la déconnexion.
+     * La protection CSRF est désactivée pour l'API REST seulement, que les clients comme Swagger
+     * ne peuvent pas fournir ; elle reste active pour toutes les pages web.
      * « throws Exception » est imposé par la méthode build() de Spring Security.
      */
     @Bean
@@ -32,7 +34,11 @@ public class SecuriteConfig {
         http
                 .authorizeHttpRequests(autorisations -> autorisations
                         .requestMatchers("/connexion", "/css/**", "/error").permitAll()
-                        .requestMatchers("/incidents/*/evaluation").hasRole("RESPONSABLE")
+                        .requestMatchers(
+                                "/incidents/*/evaluation",
+                                "/api/incidents/*/resolution",
+                                "/export/**",
+                                "/import/**").hasRole("RESPONSABLE")
                         .anyRequest().authenticated())
                 .formLogin(formulaire -> formulaire
                         .loginPage("/connexion")
@@ -42,7 +48,9 @@ public class SecuriteConfig {
                         .failureUrl("/connexion?erreur"))
                 .logout(deconnexion -> deconnexion
                         .logoutUrl("/deconnexion")
-                        .logoutSuccessUrl("/connexion?deconnecte"));
+                        .logoutSuccessUrl("/connexion?deconnecte"))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**"));
         return http.build();
     }
 }

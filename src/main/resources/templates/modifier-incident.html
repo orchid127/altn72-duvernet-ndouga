@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modifier l'incident</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1 th:text="|Modifier l'incident n° ${incident.id}|">Modifier l'incident n° 1</h1>
+
+    <p>Seule la description est modifiable, tant que l'incident n'est pas résolu.</p>
+
+    <form th:action="@{/incidents/{id}/modifier(id=${incident.id})}" th:object="${formulaire}" method="post">
+        <label for="description">Description</label>
+        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('description')}"
+           th:errors="*{description}">Erreur description</p>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <p><a th:href="@{/incidents/{id}(id=${incident.id})}">Annuler et revenir au détail</a></p>
+</main>
+</body>
+</html>

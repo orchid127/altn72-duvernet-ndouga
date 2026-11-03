@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Importer des stations</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1>Importer des stations</h1>
+
+    <p>
+        Envoyez un fichier CSV encodé en UTF-8 : la première ligne contient l'en-tête (par exemple « nom »),
+        puis un nom de station par ligne. Si une seule station ne peut pas être enregistrée, aucune ne l'est.
+    </p>
+
+    <p class="message-info" th:if="${message}" th:text="${message}">3 station(s) importée(s).</p>
+    <p class="message-erreur" th:if="${erreur}" th:text="${erreur}">Le fichier envoyé est vide</p>
+
+    <form th:action="@{/import/stations}" method="post" enctype="multipart/form-data">
+        <label for="fichier">Fichier CSV</label>
+        <input type="file" id="fichier" name="fichier" accept=".csv" required>
+        <button type="submit">Importer</button>
+    </form>
+
+    <p><a th:href="@{/}">Retour à l'accueil</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Évaluer l'intervention</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1 th:text="|Évaluer l'intervention sur l'incident n° ${incident.id}|">Évaluer l'intervention sur l'incident n° 1</h1>
+
+    <dl class="fiche">
+        <dt>Description</dt>
+        <dd th:text="${incident.description}">Ascenseur bloqué au deuxième étage</dd>
+
+        <dt>Prestataire</dt>
+        <dd th:if="${incident.idPrestataire != null}" th:text="${incident.idPrestataire.nom}">Ascenseurs Express</dd>
+        <dd th:unless="${incident.idPrestataire != null}">Aucun prestataire</dd>
+    </dl>
+
+    <form th:action="@{/incidents/{id}/evaluation(id=${incident.id})}" th:object="${formulaire}" method="post">
+        <label for="note">Note (de 1 à 5)</label>
+        <select id="note" th:field="*{note}">
+            <option value="">Choisir une note</option>
+            <option th:each="valeur : ${#numbers.sequence(1, 5)}"
+                    th:value="${valeur}"
+                    th:text="${valeur}">1</option>
+        </select>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('note')}"
+           th:errors="*{note}">Erreur note</p>
+
+        <label for="commentaire">Commentaire (facultatif)</label>
+        <textarea id="commentaire" th:field="*{commentaire}" rows="3"></textarea>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('commentaire')}"
+           th:errors="*{commentaire}">Erreur commentaire</p>
+
+        <button type="submit">Enregistrer l'évaluation</button>
+    </form>
+
+    <p><a th:href="@{/incidents/{id}(id=${incident.id})}">Annuler et revenir au détail</a></p>
+</main>
+</body>
+</html>

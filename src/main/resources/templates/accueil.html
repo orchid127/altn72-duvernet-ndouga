@@ -11,6 +11,12 @@
 <main>
     <h1>Accueil</h1>
     <p>Le tableau de bord des incidents s'affichera ici.</p>
+
+    <ul>
+        <li><a th:href="@{/incidents/nouveau}">Déclarer un incident</a></li>
+        <li><a th:href="@{/export/historique.csv}">Exporter l'historique (CSV)</a></li>
+        <li><a th:href="@{/import/stations}">Importer des stations (CSV)</a></li>
+    </ul>
 </main>
 </body>
 </html>
