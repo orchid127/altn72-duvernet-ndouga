@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Incidents</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/en-tete.css}">
+</head>
+    <body>
+        <header th:replace="~{fragments/en-tete :: enTete}"></header>
+        <main class="">
+            <h1>incidents en cours</h1>
+            <div class="search">
+                <input th:type="search" placeholder="rechercher un équipement" id="search"/>
+                <select name="station" id="stations">
+                    <option value="station 1">station 1</option>
+                    <option value="station 2">station 2</option>
+                </select>
+            </div>
+            <div class="grid-incidents">
+                <div th:each="i : ${lstIncidents}" class="box-incident">
+                    <div class="incident-title">
+                        <p>incident #<span th:text="${i.id}" >id</span></p>
+                    </div>
+                    <div class="incident-content">
+                        <p th:text="${i.description}">description</p>
+                        <p>date ouverture : <span th:text="${i.dateOuverture}">date</span></p>
+                        <p>date fermeture : <span th:text="${i.dateResolution}">date</span></p>
+
+                        <button>noter prestataire</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

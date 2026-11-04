@@ -1,0 +1,43 @@
+.en-tete {
+    border: #68CFAD 1px solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.en-tete p {
+    color: #68CFAD;
+}
+
+.utilisateur {
+    font-size: 2em;
+    font-weight: bold;
+    flex-basis: 30%;
+    color: #68CFAD;
+}
+
+.profil {
+    color: #f665de;
+}
+
+.liens {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.en-tete a {
+    color: #68CFAD;
+    text-decoration: none;
+}
+
+.en-tete a:hover {
+    color: #f665de;
+}
+
+.en-tete a:focus {
+    color: #f665de;
+    text-decoration: underline;
+}

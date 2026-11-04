@@ -1,0 +1,47 @@
+html {
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100vh;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+main {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: #68CFAD;
+    border: 1px #68CFAD solid;
+    gap: 1rem;
+}
+
+.grid-incidents {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.box-incident {
+    border: 1px solid #68CFAD;
+}
+
+.incident-title {
+    border-bottom: 1px solid #68CFAD;
+    background-color: #d2ffa552;
+    color: #1ea377;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.incident-content {
+    color: #68CFAD;
+    padding: 1rem;
+}

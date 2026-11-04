@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Accueil</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/en-tete.css}">
 </head>
 <body>
-<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<header th:replace="~{fragments/en-tete :: enTete}" class="navbar"></header>
 <main>
     <h1>Accueil</h1>
     <p>Le tableau de bord des incidents s'affichera ici.</p>

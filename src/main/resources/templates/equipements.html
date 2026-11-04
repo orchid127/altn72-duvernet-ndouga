@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Equipements</title>
+        <link rel="stylesheet" th:href="@{/css/equipements.css}">
+        <link rel="stylesheet" th:href="@{/css/en-tete.css}">
+    </head>
+    <body>
+        <header th:replace="~{fragments/en-tete :: enTete}"></header>
+        <main>
+            <div>
+                <h1>équipements</h1>
+                <p>espace pour surveiller chaque équipement</p>
+                <div class="search">
+                    <input th:type="search" placeholder="rechercher un équipement" id="search"/>
+                    <select name="station" id="stations">
+                        <option value="station 1">station 1</option>
+                        <option value="station 2">station 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="tableau-equipements">
+                <div class="equipement-box" th:each="e : ${equipements}">
+                    <div class="box-title">
+                        <p>equipement #<span th:text="${e.id}">0</span></p>
+                    </div>
+                    <div class="box-content">
+                        <p th:text="${e.description}">description</p>
+                        <p>type : <span th:text="${e.type}"></span></p>
+                        <p>état : <span th:text="${e.etatFontionnement}"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <p th:if="${#lists.isEmpty(equipements)}">aucun équipement est en base :(</p>
+        </main>
+    </body>
+</html>
