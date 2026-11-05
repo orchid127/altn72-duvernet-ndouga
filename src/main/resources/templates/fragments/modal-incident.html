@@ -1,49 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <body>
-<header  class="en-tete">
-    <div class="utilisateur" th:if="${utilisateurConnecte != null}">
-        <p>
-            Bonjour
-            <span th:text="${utilisateurConnecte.prenom}">Prénom</span> !
-            (<span th:text="${utilisateurConnecte.profil}" class="profil">profil</span>) ✧˖°
-        </p>
-    </div>
 
-    <div class="liens">
-        <a class="nom-application" th:href="@{/}">equipements</a>
-        <a class="nom-application" th:href="@{/incident}">incidents</a>
-        <a class="nom-application" th:href="@{/dashboard}">dashboard</a>
-        <form th:action="@{/deconnexion}" method="post" class="form-deconnexion">
-            <button type="submit" class="bouton-lien">Déconnectez-vous</button>
-        </form>
-    </div>
-</header>
-
-<div class="modal" th:fragment="modal-incident">
+<div class="modal" id="modal-incident" th:fragment="modal-incident">
     <div class="modal-box">
         <div id="title-bar">
-            <p>modify the vulnerability information</p>
-            <div id="close">x</div>
+            <p>déclarer votre incident</p>
+            <button id="close-modal">x</button>
         </div>
-        <form>
-            <label for="threat-level">edit threat level (from 1 to 10)</label>
-            <input id="threat-level" type="number" min="1" max="10" placeholder="how bad does it get ?">
-
-            <label for="type">edit type</label>
-            <input type="text">
-
-
-            <label for="type">assign an asset</label>
-            <select id="type">
-                <option value="val"></option>
+        <form th:action="@{/incidents/}" method="post">
+            <label for="equipement-selectionne">sélectionner l'équipement concerné</label>
+            <select name="equipementId" id="equipement-selectionne" required>
+                <option value="">sélectionner un équipement</option>
+                <option th:each="e : ${equipements}"
+                        th:value="${e.id}"
+                        th:text="${e.reference}"
+                        th:selected="${e.id == selectedEquipementId}">#ref</option>
             </select>
 
-            <label for="desc">edit description</label>
-            <textarea id="desc" type="text" placeholder="description of the vulnerability"></textarea>
-            <button type="button">save ⋆.°⭑</button>
+            <label for="desc">ajouter une description</label>
+            <textarea id="desc" name="description" placeholder="description de l'incident" maxlength="250" required></textarea>
+            <p th:if="${erreur}" th:text="${erreur}" class="flash-error"></p>
+            <button type="submit">créer ⋆.°⭑</button>
         </form>
     </div>
+    <script th:src="@{/js/modal-incident.js}" defer></script>
 </div>
 </body>
 </html>

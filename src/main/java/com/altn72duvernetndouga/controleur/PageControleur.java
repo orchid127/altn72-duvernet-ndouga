@@ -40,6 +40,7 @@ public class PageControleur {
     @GetMapping("/incident")
     public String afficherIncidents(Model model){
         model.addAttribute("lstIncidents", incidentService.listerIncidentsParDate());
+        model.addAttribute("equipements", equipementService.listerEquipements());
         return "incidents";
     }
 

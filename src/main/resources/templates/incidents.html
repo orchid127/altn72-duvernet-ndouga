@@ -6,23 +6,16 @@
         <title>Incidents</title>
         <link rel="stylesheet" th:href="@{/css/incidents.css}">
         <link rel="stylesheet" th:href="@{/css/en-tete.css}">
+        <link rel="stylesheet" th:href="@{/css/modal-incident.css}">
     </head>
     <body>
         <header th:replace="~{fragments/en-tete :: enTete}"></header>
         <main class="">
             <div class="creation">
                 <div id="declarer-button">
-                    <button>déclarer un incident</button>
+                    <button type="button" id="open-modal">déclarer un incident</button>
                 </div>
-                <form>
-                    <label>equipement concerné</label>
-                    <select>
-                        <option value="">sélectionner un equipement</option>
-                    </select>
-                    <label>description</label>
-                    <input type="text" name="description" id="description"/>
-                    <button type="submit">créer l'incident ⊹ ࣪ ˖</button>
-                </form>
+                <div th:replace="~{fragments/modal-incident :: modal-incident}"></div>
             </div>
             <div class="historique">
                 <h1>historique incidents résolus</h1>
@@ -36,7 +29,14 @@
                             <p>date ouverture : <span th:text="${i.dateOuverture}">date</span></p>
                             <p>date fermeture : <span th:text="${i.dateResolution}">date</span></p>
 
-                            <button>noter prestataire</button>
+                            <select>
+                                <option>noter prestataire</option>
+                                <option value="1">1/5</option>
+                                <option value="2">2/5</option>
+                                <option value="3">3/5</option>
+                                <option value="4">4/5</option>
+                                <option value="5">5/5</option>
+                            </select>
                         </div>
                     </div>
                 </div>

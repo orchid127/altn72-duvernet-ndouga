@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Clock;
 import java.util.List;
@@ -81,12 +82,13 @@ public class IncidentController {
      */
     @PostMapping("/")
     public String declarerIncident(@Valid @ModelAttribute("formulaire") DeclarationIncidentForm formulaire,
-                                   BindingResult resultat) {
+                                   BindingResult resultat, RedirectAttributes redirect) {
         if (resultat.hasErrors()) {
-            return "declarer-incident";
+            redirect.addFlashAttribute("erreur", "Formulaire invalide.");
+            return "redirect:/incident";
         }
         Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
-        return "redirect:/incidents/" + incident.getId() ;
+        return "redirect:/incident";
     }
 
     /**
