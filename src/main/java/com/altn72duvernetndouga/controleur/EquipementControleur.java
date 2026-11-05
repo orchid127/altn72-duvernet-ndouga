@@ -4,11 +4,13 @@ import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.service.EquipementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
+@RequestMapping("/equipements")
 public class EquipementControleur {
     private final EquipementService equipementService;
 
@@ -16,13 +18,13 @@ public class EquipementControleur {
         this.equipementService = equipementService;
     }
 
-    @GetMapping("/equipements")
+    @GetMapping("/")
     public ResponseEntity<List<Equipement>> afficherEquipements() {
         List<Equipement> response = equipementService.listerEquipements();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/equipements/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Equipement> afficherEquipementParId(@PathVariable int id) {
         Equipement response = equipementService.trouverParIdentifiant(id);
         if (response == null) {
@@ -31,13 +33,13 @@ public class EquipementControleur {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/equipements/{idStation}")
+    @GetMapping("/station/{idStation}")
     public ResponseEntity<List<Equipement>> afficherEquipementsParStation(@PathVariable int idStation) {
         List<Equipement> response = equipementService.trouverEquipementParStation(idStation);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/equipements")
+    @PostMapping("/")
     public ResponseEntity<Equipement> ajouterEquipement(@RequestBody Equipement equipement) {
         Equipement response =  equipementService.ajouterEquipement(equipement);
         if (response == null) {

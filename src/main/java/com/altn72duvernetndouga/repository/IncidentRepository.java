@@ -2,6 +2,7 @@ package com.altn72duvernetndouga.repository;
 
 import com.altn72duvernetndouga.modele.Incident;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface IncidentRepository extends JpaRepository<Incident, Integer> {
      * Sert à l'historique (F9) et à son export en CSV.
      */
     List<Incident> findByDateResolutionIsNotNullOrderByDateResolutionDesc();
+
+    @Query("SELECT i from Incident i WHERE i.statut = 'Résolu' ")
+    List<Incident> findByStatutIsResolu();
 }

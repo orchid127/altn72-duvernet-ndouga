@@ -1,0 +1,134 @@
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #d2ffa552;
+    display: none;
+}
+
+.modal.open {
+    display: grid;
+}
+
+
+.modal-box {
+    border: 1px solid #f665de;
+    padding: 0;
+    background-color: white;
+    width: 30rem;
+    margin: auto;
+    margin-top: 7%;
+    color: #f665de;
+    font-family: LilexNerd;
+    display: flex;
+    flex-direction: column;
+}
+
+#title-bar {
+    border-bottom: 1px solid #f665de;
+    background-color: #f665de52;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#title-bar p {
+    margin: 0;
+    font-size: 2ch;
+    font-family: LilexNerd;
+    font-weight: bold;
+    color: #982d7b;
+    flex: 1;
+}
+
+#close-modal {
+    border: 1px solid #f665de;
+    border-radius: 0;
+    background-color: #f665de52;
+    padding: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#close-modal:hover {
+    background-color: #f665de52;
+}
+
+#close-modal:active {
+    background-color: #f665de7a;
+}
+
+form {
+    height: 100%;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    font-family: LilexNerd;
+}
+
+form label {
+    font-size: 2ch;
+    margin-bottom: 0.75rem;
+}
+
+form input {
+    font-size: 2ch;
+    font-family: LilexNerd;
+    padding: 0.3rem;
+    color: #982d7b;
+    border: 1px solid #f665de;
+    margin-bottom: 0.75rem;
+    outline-style: none;
+}
+
+form textarea {
+    font-size: 2ch;
+    font-family: LilexNerd;
+    color: #982d7b;
+    border: 1px solid #f665de;
+    margin-bottom: 0.75rem;
+    height: 10rem;
+    resize: none;
+    padding: 0.5rem;
+    outline-style: none;
+}
+
+form select {
+    font-size: 2ch;
+    font-family: LilexNerd;
+    padding: 0.3rem;
+    color: #982d7b;
+    border: 1px solid #f665de;
+    background-color: white;
+    margin-bottom: 0.75rem;
+    outline-style: none;
+}
+
+form option {
+    background-color: white;
+}
+
+form button {
+    font-size: 2ch;
+    background-color: white;
+    color: #982d7b;
+    border: 1px solid #f665de;
+    font-family: LilexNerd;
+    padding: 0.5rem;
+}
+
+form button:hover {
+    background-color: #f665de52;
+}
+
+form button:active {
+    background-color: #f665de7a;
+}

@@ -4,18 +4,18 @@ import com.altn72duvernetndouga.formulaire.DeclarationIncidentForm;
 import com.altn72duvernetndouga.formulaire.ModificationIncidentForm;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
+import com.altn72duvernetndouga.modele.Prestataire;
 import com.altn72duvernetndouga.service.EquipementService;
 import com.altn72duvernetndouga.service.EvaluationService;
 import com.altn72duvernetndouga.service.IncidentService;
 import com.altn72duvernetndouga.service.SurveillanceService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Clock;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.List;
  * Pages liées aux incidents : déclaration (F4), détail (F5) et modification (F6).
  */
 @Controller
+@RequestMapping("/incidents")
 public class IncidentController {
 
     private final IncidentService incidentService;
@@ -51,10 +52,16 @@ public class IncidentController {
         return equipementService.listerEquipements();
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Incident>> listerIncidentsParDate() {
+        List<Incident> response = incidentService.listerIncidentsParDate();
+        return ResponseEntity.ok(response);
+    }
+
     /**
      * Affiche le formulaire de déclaration, vide.
      */
-    @GetMapping("/incidents/nouveau")
+    @GetMapping("/nouveau")
     public String afficherFormulaireDeclaration(Model model) {
         model.addAttribute("formulaire", new DeclarationIncidentForm());
         return "declarer-incident";
@@ -79,7 +86,7 @@ public class IncidentController {
      * (calculée à partir de l'heure courante), son évaluation éventuelle,
      * et si son prestataire est sous surveillance (PS).
      */
-    @GetMapping("/incidents/{id}")
+    @GetMapping("/{id}")
     public String afficherDetail(@PathVariable Integer id, Model model) {
         Incident incident = incidentService.trouverParIdentifiant(id);
         model.addAttribute("incident", incident);
@@ -88,6 +95,21 @@ public class IncidentController {
         model.addAttribute("prestataireSousSurveillance",
                 surveillanceService.estSousSurveillance(incident.getIdPrestataire()));
         return "incident-detail";
+    }
+
+    /**
+     * Traite le formulaire envoyé : le réaffiche avec les messages d'erreur s'il est invalide,
+     * sinon déclare l'incident puis redirige pour éviter un double envoi en cas de rafraîchissement.
+     */
+    @PostMapping("/")
+    public String declarerIncident(@Valid @ModelAttribute("formulaire") DeclarationIncidentForm formulaire,
+                                   BindingResult resultat, RedirectAttributes redirect) {
+        if (resultat.hasErrors()) {
+            redirect.addFlashAttribute("erreur", "Formulaire invalide.");
+            return "redirect:/incident";
+        }
+        Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
+        return "redirect:/incident";
     }
 
     /**

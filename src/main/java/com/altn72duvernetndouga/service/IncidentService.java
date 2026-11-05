@@ -102,4 +102,8 @@ public class IncidentService {
                 .sorted((i1, i2) -> i1.getDateOuverture().compareTo(i2.getDateOuverture()))
                 .toList();
     }
+
+    public List<Incident> listerIncidentsNonResolus() {
+        return incidentRepository.findByStatutIsResolu();
+    }
 }
