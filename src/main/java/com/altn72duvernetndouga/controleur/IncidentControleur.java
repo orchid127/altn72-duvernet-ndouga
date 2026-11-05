@@ -23,8 +23,10 @@ public class IncidentControleur {
     }
 
     @PutMapping("/incidents/{idIncident}/prestataire")
-    public ResponseEntity<Incident> affecterPrestataireIncident(@PathVariable int idIncident, @RequestBody Prestataire prestataire) {
-        Incident response = incidentService.affecterPrestataireIncident(idIncident, prestataire);
+    public ResponseEntity<Incident> affecterPrestataireIncident(@PathVariable int idIncident,
+                                                                @RequestBody Prestataire prestataire,
+                                                                @RequestParam(defaultValue = "false") boolean confirmation) {
+        Incident response = incidentService.affecterPrestataireIncident(idIncident, prestataire, confirmation);
         if (response == null) {
             return ResponseEntity.notFound().build();
         }

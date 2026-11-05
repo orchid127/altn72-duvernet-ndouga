@@ -1,0 +1,146 @@
+:root {
+    --bleu-reseau: #1d2b4f;
+    --jaune-ligne: #f2b705;
+    --fond: #eef1f5;
+    --surface: #ffffff;
+    --texte: #1a1f2b;
+    --texte-secondaire: #5b6475;
+    --bordure: #b8c0cc;
+    --rouge-erreur: #b3261e;
+    --vert-info: #1f7a4d;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    color: var(--texte);
+    background: var(--fond);
+}
+
+.en-tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--bleu-reseau);
+    border-bottom: 4px solid var(--jaune-ligne);
+    color: #ffffff;
+}
+
+.nom-application {
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.utilisateur {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.form-deconnexion {
+    display: inline;
+    margin: 0;
+}
+
+.bouton-lien {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--jaune-ligne);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+main {
+    max-width: 50rem;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: var(--surface);
+    border-radius: 6px;
+}
+
+h1 {
+    margin-top: 0;
+    color: var(--bleu-reseau);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 30rem;
+}
+
+input,
+select,
+textarea {
+    padding: 0.5rem;
+    border: 1px solid var(--bordure);
+    border-radius: 4px;
+    font: inherit;
+}
+
+form button {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--bleu-reseau);
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--jaune-ligne);
+    outline-offset: 2px;
+}
+
+.message-erreur {
+    margin: 0;
+    color: var(--rouge-erreur);
+}
+
+.message-info {
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    background: #e6f4ec;
+    color: var(--vert-info);
+}
+
+.fiche {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1.5rem;
+}
+
+.fiche dt {
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.fiche dd {
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+}
