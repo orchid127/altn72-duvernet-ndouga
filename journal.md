@@ -1,8 +1,12 @@
-# Journal — ?? (ALTN72, 2026-27)
+# Journal — Kassandra (ALTN72, 2026-27)
 **Groupe :** Emma DUVERNET, Kimberley NDOUGA
 
 ## README
 Kassandra est une plateforme qui permet de gérer les équipements et les éventuels incidents qui peuvent s'y produire.
+Lien repo git : https://github.com/orchid127/altn72-duvernet-ndouga
+Lien du déploiement : https://altn72-duvernet-ndouga.onrender.com/
+login : 1
+mot de passe : 1234
 
 ## ARCHITECTURE
 L'application suit une architecture classique Vue > API Service > Persistance > Base de données.
@@ -18,6 +22,7 @@ L'application suit une architecture classique Vue > API Service > Persistance > 
 ## LOT ALPHA
 
 ## BILAN
+- Fonctionnalités non réalisées et pourquoi : le dashboard et la notation des incidents manque à l'application, manque de temps :/ Les endpoints nécessaires ont été créé mais l'interface graphique est en cours de construction
 
 ## TACHES A FAIRE
 - [x] Gérer exceptions
