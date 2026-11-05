@@ -36,6 +36,7 @@ public class SecuriteConfig {
                         .requestMatchers("/connexion", "/css/**", "/error").permitAll()
                         .requestMatchers(
                                 "/incidents/*/evaluation",
+                                "/incidents/*/affectation",
                                 "/api/incidents/*/resolution",
                                 "/export/**",
                                 "/import/**").hasRole("RESPONSABLE")

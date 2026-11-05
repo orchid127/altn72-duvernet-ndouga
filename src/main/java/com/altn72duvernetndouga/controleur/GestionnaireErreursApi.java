@@ -1,6 +1,7 @@
 package com.altn72duvernetndouga.controleur;
 
 import com.altn72duvernetndouga.dto.ErreurApi;
+import com.altn72duvernetndouga.exception.ConfirmationRequiseException;
 import com.altn72duvernetndouga.exception.EquipementIntrouvableException;
 import com.altn72duvernetndouga.exception.ExceptionMetier;
 import com.altn72duvernetndouga.exception.IncidentIntrouvableException;
@@ -28,11 +29,12 @@ public class GestionnaireErreursApi {
     }
 
     /**
-     * Opération incompatible avec l'état actuel de l'incident : répond 409.
+     * Opération incompatible avec l'état actuel : incident déjà résolu,
+     * ou affectation à un prestataire sous surveillance sans confirmation (PS5). Répond 409.
      */
-    @ExceptionHandler(IncidentResoluException.class)
+    @ExceptionHandler({IncidentResoluException.class, ConfirmationRequiseException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErreurApi conflit(IncidentResoluException exception) {
+    public ErreurApi conflit(ExceptionMetier exception) {
         return new ErreurApi(exception.getMessage());
     }
 }

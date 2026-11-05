@@ -7,6 +7,7 @@ import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.service.EquipementService;
 import com.altn72duvernetndouga.service.EvaluationService;
 import com.altn72duvernetndouga.service.IncidentService;
+import com.altn72duvernetndouga.service.SurveillanceService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ import java.time.Clock;
 import java.util.List;
 
 /**
- * Pages liées aux incidents : pour l'instant, la déclaration d'un incident (F4).
+ * Pages liées aux incidents : déclaration (F4), détail (F5) et modification (F6).
  */
 @Controller
 public class IncidentController {
@@ -28,19 +29,22 @@ public class IncidentController {
     private final IncidentService incidentService;
     private final EquipementService equipementService;
     private final EvaluationService evaluationService;
+    private final SurveillanceService surveillanceService;
     private final Clock horloge;
 
     public IncidentController(IncidentService incidentService, EquipementService equipementService,
-                              EvaluationService evaluationService, Clock horloge) {
+                              EvaluationService evaluationService, SurveillanceService surveillanceService,
+                              Clock horloge) {
         this.incidentService = incidentService;
         this.equipementService = equipementService;
         this.evaluationService = evaluationService;
+        this.surveillanceService = surveillanceService;
         this.horloge = horloge;
     }
 
     /**
      * Fournit la liste des équipements à toutes les pages de ce contrôleur,
-     * pour remplir la liste déroulante du formulaire.
+     * pour remplir la liste déroulante du formulaire de déclaration.
      */
     @ModelAttribute("equipements")
     public List<Equipement> equipements() {
@@ -58,7 +62,7 @@ public class IncidentController {
 
     /**
      * Traite le formulaire envoyé : le réaffiche avec les messages d'erreur s'il est invalide,
-     * sinon déclare l'incident puis redirige pour éviter un double envoi en cas de rafraîchissement.
+     * sinon déclare l'incident puis redirige vers son détail, pour éviter un double envoi.
      */
     @PostMapping("/incidents")
     public String declarerIncident(@Valid @ModelAttribute("formulaire") DeclarationIncidentForm formulaire,
@@ -67,12 +71,13 @@ public class IncidentController {
             return "declarer-incident";
         }
         Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
-        return "redirect:/incidents/" + incident.getId() ;
+        return "redirect:/incidents/" + incident.getId();
     }
 
     /**
      * Affiche le détail d'un incident : ses informations, sa durée d'ouverture
-     * (calculée à partir de l'heure courante) et son évaluation éventuelle.
+     * (calculée à partir de l'heure courante), son évaluation éventuelle,
+     * et si son prestataire est sous surveillance (PS).
      */
     @GetMapping("/incidents/{id}")
     public String afficherDetail(@PathVariable Integer id, Model model) {
@@ -80,6 +85,8 @@ public class IncidentController {
         model.addAttribute("incident", incident);
         model.addAttribute("dureeEnHeures", incident.dureeOuvertureEnHeures(horloge));
         model.addAttribute("evaluation", evaluationService.trouverPourIncident(incident).orElse(null));
+        model.addAttribute("prestataireSousSurveillance",
+                surveillanceService.estSousSurveillance(incident.getIdPrestataire()));
         return "incident-detail";
     }
 
@@ -112,5 +119,4 @@ public class IncidentController {
         incidentService.modifierDescription(id, formulaire.getDescription());
         return "redirect:/incidents/" + id;
     }
-
 }
