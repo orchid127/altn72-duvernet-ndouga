@@ -33,7 +33,10 @@
         <dd th:text="|${dureeEnHeures} heures|">47 heures</dd>
 
         <dt>Prestataire</dt>
-        <dd th:if="${incident.idPrestataire != null}" th:text="${incident.idPrestataire.nom}">Ascenseurs Express</dd>
+        <dd th:if="${incident.idPrestataire != null}">
+            <span th:text="${incident.idPrestataire.nom}">Dupont Réseaux</span>
+            <strong class="message-erreur" th:if="${prestataireSousSurveillance}">(sous surveillance)</strong>
+        </dd>
         <dd th:unless="${incident.idPrestataire != null}">Aucun prestataire</dd>
 
         <th:block th:if="${incident.estResolu()}">
@@ -52,6 +55,9 @@
     <ul class="actions">
         <li th:unless="${incident.estResolu()}">
             <a th:href="@{/incidents/{id}/modifier(id=${incident.id})}">Modifier la description</a>
+        </li>
+        <li th:if="${!incident.estResolu() and utilisateurConnecte.profil == 'RESPONSABLE'}">
+            <a th:href="@{/incidents/{id}/affectation(id=${incident.id})}">Affecter un prestataire</a>
         </li>
         <li th:if="${incident.estResolu() and incident.idPrestataire != null and evaluation == null
                     and utilisateurConnecte.profil == 'RESPONSABLE'}">

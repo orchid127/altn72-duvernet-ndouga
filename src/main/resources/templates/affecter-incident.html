@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Affecter un prestataire</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/en-tete :: enTete}"></header>
+<main>
+    <h1 th:text="|Affecter un prestataire à l'incident n° ${incident.id}|">Affecter un prestataire à l'incident n° 1</h1>
+
+    <p th:text="${incident.description}">Ascenseur bloqué au deuxième étage</p>
+
+    <p class="message-erreur" th:if="${demandeConfirmation}" th:text="${demandeConfirmation}">
+        Le prestataire Dupont Réseaux est sous surveillance : confirmez l'affectation pour l'enregistrer
+    </p>
+
+    <form th:action="@{/incidents/{id}/affectation(id=${incident.id})}" th:object="${formulaire}" method="post">
+        <label for="prestataireId">Prestataire</label>
+        <select id="prestataireId" th:field="*{prestataireId}">
+            <option value="">Choisir un prestataire</option>
+            <option th:each="choix : ${prestataires}"
+                    th:value="${choix.id}"
+                    th:text="${choix.libelle}">Dupont Réseaux (sous surveillance)</option>
+        </select>
+        <p class="message-erreur"
+           th:if="${#fields.hasErrors('prestataireId')}"
+           th:errors="*{prestataireId}">Erreur prestataire</p>
+
+        <label th:if="${demandeConfirmation}">
+            <input type="checkbox" th:field="*{confirmation}">
+            Je confirme l'affectation à ce prestataire sous surveillance
+        </label>
+
+        <button type="submit">Affecter</button>
+    </form>
+
+    <p><a th:href="@{/incidents/{id}(id=${incident.id})}">Annuler et revenir au détail</a></p>
+</main>
+</body>
+</html>

@@ -1,7 +1,8 @@
 package com.altn72duvernetndouga.service;
 
-import com.altn72duvernetndouga.exception.IncidentResoluException;
+import com.altn72duvernetndouga.exception.ConfirmationRequiseException;
 import com.altn72duvernetndouga.exception.IncidentIntrouvableException;
+import com.altn72duvernetndouga.exception.IncidentResoluException;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
 import com.altn72duvernetndouga.modele.Prestataire;
@@ -24,11 +25,14 @@ public class IncidentService {
 
     private final IncidentRepository incidentRepository;
     private final EquipementService equipementService;
+    private final SurveillanceService surveillanceService;
     private final Clock horloge;
 
-    public IncidentService(IncidentRepository incidentRepository, EquipementService equipementService, Clock horloge) {
+    public IncidentService(IncidentRepository incidentRepository, EquipementService equipementService,
+                           SurveillanceService surveillanceService, Clock horloge) {
         this.incidentRepository = incidentRepository;
         this.equipementService = equipementService;
+        this.surveillanceService = surveillanceService;
         this.horloge = horloge;
     }
 
@@ -65,9 +69,14 @@ public class IncidentService {
 
     /**
      * Affecte ou réaffecte un prestataire à un incident non résolu (F7).
+     * Si le prestataire est sous surveillance, l'affectation exige une confirmation explicite :
+     * sans elle, l'exception est levée avant tout enregistrement (PS5, RG10).
      */
-    public Incident affecterPrestataireIncident(int idIncident, Prestataire prestataire) {
+    public Incident affecterPrestataireIncident(int idIncident, Prestataire prestataire, boolean confirmation) {
         Incident incident = trouverParIdentifiant(idIncident);
+        if (surveillanceService.estSousSurveillance(prestataire) && !confirmation) {
+            throw new ConfirmationRequiseException(prestataire.getNom());
+        }
         if (!incident.getStatut().equals(STATUT_RESOLU)) {
             incident.setIdPrestataire(prestataire);
             incident.setStatut(STATUT_AFFECTE);
