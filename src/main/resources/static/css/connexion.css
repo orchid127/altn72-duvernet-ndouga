@@ -1,0 +1,35 @@
+html {
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100vh;
+    padding: 1rem;
+}
+
+main {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #68CFAD;
+    border: 2px #68CFAD solid;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+p {
+    font-size: 2em;
+}

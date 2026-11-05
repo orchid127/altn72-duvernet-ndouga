@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="modal" id="modal-incident" th:fragment="modal-incident">
+    <div class="modal-box">
+        <div id="title-bar">
+            <p>déclarer votre incident</p>
+            <button id="close-modal">x</button>
+        </div>
+        <form th:action="@{/incidents/}" method="post">
+            <label for="equipement-selectionne">sélectionner l'équipement concerné</label>
+            <select name="equipementId" id="equipement-selectionne" required>
+                <option value="">sélectionner un équipement</option>
+                <option th:each="e : ${equipements}"
+                        th:value="${e.id}"
+                        th:text="${e.reference}"
+                        th:selected="${e.id == selectedEquipementId}">#ref</option>
+            </select>
+
+            <label for="desc">ajouter une description</label>
+            <textarea id="desc" name="description" placeholder="description de l'incident" maxlength="250" required></textarea>
+            <p th:if="${erreur}" th:text="${erreur}" class="flash-error"></p>
+            <button type="submit">créer ⋆.°⭑</button>
+        </form>
+    </div>
+    <script th:src="@{/js/modal-incident.js}" defer></script>
+</div>
+</body>
+</html>

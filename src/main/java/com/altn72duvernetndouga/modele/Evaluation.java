@@ -24,6 +24,18 @@ public class Evaluation {
     @Column(name = "date_evaluation", nullable = false)
     private LocalDate dateEvaluation;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_evaluation")
+    private Incident incident;
+
+    public Incident getIncident() {
+        return incident;
+    }
+
+    public void setIncident(Incident incident) {
+        this.incident = incident;
+    }
+
     protected Evaluation(){
 
     }

@@ -1,5 +1,6 @@
 package com.altn72duvernetndouga.controleur;
 
+import com.altn72duvernetndouga.exception.EvaluationImpossibleException;
 import com.altn72duvernetndouga.formulaire.EvaluationForm;
 import com.altn72duvernetndouga.service.EvaluationService;
 import com.altn72duvernetndouga.service.IncidentService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Pages liées à l'évaluation d'un prestataire après la résolution d'un incident (F10).
@@ -44,12 +46,17 @@ public class EvaluationControleur {
     public String evaluerIncident(@PathVariable Integer id,
                                   @Valid @ModelAttribute("formulaire") EvaluationForm formulaire,
                                   BindingResult resultat,
-                                  Model model) {
+                                  RedirectAttributes redirect) {
         if (resultat.hasErrors()) {
-            model.addAttribute("incident", incidentService.trouverParIdentifiant(id));
-            return "evaluer-incident";
+            redirect.addFlashAttribute("erreur", "Note invalide.");
+            return "redirect:/incident";
         }
-        evaluationService.evaluer(id, formulaire.getNote(), formulaire.getCommentaire());
-        return "redirect:/incidents/" + id;
+        try {
+            evaluationService.evaluer(id, formulaire.getNote(), formulaire.getCommentaire());
+            redirect.addFlashAttribute("message", "Évaluation enregistrée.");
+        } catch (EvaluationImpossibleException e) {
+            redirect.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/incident";
     }
 }

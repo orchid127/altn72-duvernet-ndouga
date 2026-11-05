@@ -43,6 +43,10 @@ public class EquipementService {
                 .orElseThrow(() -> new EquipementIntrouvableException(id));
     }
 
+    public List<Equipement> filtrerEquipements(Integer stationId, String search) {
+        return equipementRepository.filter(stationId, search);
+    }
+
     public Equipement ajouterEquipement(Equipement equipement) {
         return equipementRepository.save(equipement);
     }

@@ -4,17 +4,17 @@ import com.altn72duvernetndouga.formulaire.DeclarationIncidentForm;
 import com.altn72duvernetndouga.formulaire.ModificationIncidentForm;
 import com.altn72duvernetndouga.modele.Equipement;
 import com.altn72duvernetndouga.modele.Incident;
+import com.altn72duvernetndouga.modele.Prestataire;
 import com.altn72duvernetndouga.service.EquipementService;
 import com.altn72duvernetndouga.service.EvaluationService;
 import com.altn72duvernetndouga.service.IncidentService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Clock;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.List;
  * Pages liées aux incidents : pour l'instant, la déclaration d'un incident (F4).
  */
 @Controller
+@RequestMapping("/incidents")
 public class IncidentController {
 
     private final IncidentService incidentService;
@@ -47,40 +48,47 @@ public class IncidentController {
         return equipementService.listerEquipements();
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Incident>> listerIncidentsParDate() {
+        List<Incident> response = incidentService.listerIncidentsParDate();
+        return ResponseEntity.ok(response);
+    }
+
     /**
      * Affiche le formulaire de déclaration, vide.
      */
-    @GetMapping("/incidents/nouveau")
+    @GetMapping("/nouveau")
     public String afficherFormulaireDeclaration(Model model) {
         model.addAttribute("formulaire", new DeclarationIncidentForm());
         return "declarer-incident";
     }
 
     /**
-     * Traite le formulaire envoyé : le réaffiche avec les messages d'erreur s'il est invalide,
-     * sinon déclare l'incident puis redirige pour éviter un double envoi en cas de rafraîchissement.
-     */
-    @PostMapping("/incidents")
-    public String declarerIncident(@Valid @ModelAttribute("formulaire") DeclarationIncidentForm formulaire,
-                                   BindingResult resultat) {
-        if (resultat.hasErrors()) {
-            return "declarer-incident";
-        }
-        Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
-        return "redirect:/incidents/" + incident.getId() ;
-    }
-
-    /**
      * Affiche le détail d'un incident : ses informations, sa durée d'ouverture
      * (calculée à partir de l'heure courante) et son évaluation éventuelle.
      */
-    @GetMapping("/incidents/{id}")
+    @GetMapping("/{id}")
     public String afficherDetail(@PathVariable Integer id, Model model) {
         Incident incident = incidentService.trouverParIdentifiant(id);
         model.addAttribute("incident", incident);
         model.addAttribute("dureeEnHeures", incident.dureeOuvertureEnHeures(horloge));
         model.addAttribute("evaluation", evaluationService.trouverPourIncident(incident).orElse(null));
         return "incident-detail";
+    }
+
+    /**
+     * Traite le formulaire envoyé : le réaffiche avec les messages d'erreur s'il est invalide,
+     * sinon déclare l'incident puis redirige pour éviter un double envoi en cas de rafraîchissement.
+     */
+    @PostMapping("/")
+    public String declarerIncident(@Valid @ModelAttribute("formulaire") DeclarationIncidentForm formulaire,
+                                   BindingResult resultat, RedirectAttributes redirect) {
+        if (resultat.hasErrors()) {
+            redirect.addFlashAttribute("erreur", "Formulaire invalide.");
+            return "redirect:/incident";
+        }
+        Incident incident = incidentService.declarer(formulaire.getEquipementId(), formulaire.getDescription());
+        return "redirect:/incident";
     }
 
     /**
@@ -113,4 +121,21 @@ public class IncidentController {
         return "redirect:/incidents/" + id;
     }
 
+    @PutMapping("/incidents/{idIncident}/prestataire")
+    public ResponseEntity<Incident> affecterPrestataireIncident(@PathVariable int idIncident, @RequestBody Prestataire prestataire) {
+        Incident response = incidentService.affecterPrestataireIncident(idIncident, prestataire);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/incidents/{idIncident}/date-resolution")
+    public ResponseEntity<Incident> enregistrerDateResolution(@PathVariable int idIncident) {
+        Incident response = incidentService.enregistrerDateResolutionIncident(idIncident);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }

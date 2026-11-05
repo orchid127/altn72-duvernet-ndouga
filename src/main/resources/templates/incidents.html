@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Incidents</title>
+        <link rel="stylesheet" th:href="@{/css/incidents.css}">
+        <link rel="stylesheet" th:href="@{/css/en-tete.css}">
+        <link rel="stylesheet" th:href="@{/css/modal-incident.css}">
+    </head>
+    <body>
+        <header th:replace="~{fragments/en-tete :: enTete}"></header>
+        <main class="">
+            <div class="creation">
+                <div id="declarer-button">
+                    <button type="button" id="open-modal">déclarer un incident</button>
+                </div>
+                <div th:replace="~{fragments/modal-incident :: modal-incident}"></div>
+            </div>
+            <div class="historique">
+                <h1>historique incidents résolus</h1>
+                <div class="grid-incidents">
+                    <div th:each="i : ${lstIncidents}" class="box-incident">
+                        <div class="incident-title">
+                            <p>incident #<span th:text="${i.id}" >id</span></p>
+                        </div>
+                        <div class="incident-content">
+                            <p th:text="${i.description}">description</p>
+                            <p>date ouverture : <span th:text="${i.dateOuverture}">date</span></p>
+                            <p>date fermeture : <span th:text="${i.dateResolution}">date</span></p>
+                            <p>prestataire : <span th:if="${i.idPrestataire != null}" th:text="${i.idPrestataire.nom}">presta</span></p>
+
+                            <form class="evaluation-form" th:if="${i.estResolu() and i.idPrestataire != null and i.idEvaluation == null}"
+                                  th:action="@{/incidents/{id}/evaluation(id=${i.id})}" method="post">
+                                <select name="note" onchange="this.form.submit()">
+                                    <option value="">noter prestataire</option>
+                                    <option th:each="n : ${#numbers.sequence(1, 5)}"
+                                            th:value="${n}"
+                                            th:text="${n} + '/5'"
+                                            th:selected="${i.idPrestataire != null and i.idPrestataire.nom == n}">1/5</option>
+                                </select>
+                            </form>
+                        </div>
+
+                        <div>
+                            <p th:if="${i.idEvaluation != null}">
+                                évaluation : <span th:text="${i.idEvaluation.note}">5</span>/5
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

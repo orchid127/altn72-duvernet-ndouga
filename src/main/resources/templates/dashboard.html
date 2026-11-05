@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Incidents</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/en-tete.css}">
+</head>
+    <body>
+        <header th:replace="~{fragments/en-tete :: enTete}"></header>
+        <main class="">
+            <h1>incidents en cours</h1>
+            <form th:action="@{/}" method="get" class="search">
+                <input name="search" type="search" th:value="${search}" placeholder="rechercher un équipement par référence" id="searchbar"/>
+
+                <select name="stationId" id="stations" onchange="this.form.submit()">
+                    <option value="">filtrer par station</option>
+                    <option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.nomStation}" th:selected="${station.id == selectedStationId}">station</option>
+                </select>
+            </form>
+            <div class="grid-incidents">
+                <div th:each="i : ${lstIncidents}" class="box-incident">
+                    <div class="incident-title">
+                        <p>incident #<span th:text="${i.id}" >id</span></p>
+                    </div>
+                    <div class="incident-content">
+                        <p th:text="${i.description}">description</p>
+                        <p>date ouverture : <span th:text="${i.dateOuverture}">date</span></p>
+                        <p>date fermeture : <span th:text="${i.dateResolution}">date</span></p>
+
+                        <button>noter prestataire</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
