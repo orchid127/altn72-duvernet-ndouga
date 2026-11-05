@@ -14,7 +14,7 @@
 .utilisateur {
     font-size: 2em;
     font-weight: bold;
-    flex-basis: 30%;
+    flex-basis: 50%;
     color: #68CFAD;
 }
 
@@ -40,4 +40,18 @@
 .en-tete a:focus {
     color: #f665de;
     text-decoration: underline;
+}
+
+.en-tete button {
+    border: solid #f665de 1px;
+    color: #f665de;
+    border-radius: 0;
+    background-color: white;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+}
+
+.en-tete button:hover {
+    color: #982d7b;
+    background-color: #f665de52;
 }

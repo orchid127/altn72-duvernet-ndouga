@@ -11,7 +11,18 @@
         <header th:replace="~{fragments/en-tete :: enTete}"></header>
         <main class="">
             <div class="creation">
-                <button>déclarer incident</button>
+                <div id="declarer-button">
+                    <button>déclarer un incident</button>
+                </div>
+                <form>
+                    <label>equipement concerné</label>
+                    <select>
+                        <option value="">sélectionner un equipement</option>
+                    </select>
+                    <label>description</label>
+                    <input type="text" name="description" id="description"/>
+                    <button type="submit">créer l'incident ⊹ ࣪ ˖</button>
+                </form>
             </div>
             <div class="historique">
                 <h1>historique incidents résolus</h1>

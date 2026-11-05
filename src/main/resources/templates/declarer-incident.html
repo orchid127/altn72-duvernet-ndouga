@@ -12,7 +12,7 @@
     <h1>Déclarer un incident</h1>
 
     <form th:action="@{/incidents}" th:object="${formulaire}" method="post">
-        <label for="equipementId">Équipement</label>
+        <label>Équipement</label>
         <select th:field="*{equipementId}">
             <option value="">Choisir un équipement</option>
             <option th:each="equipement : ${equipements}"
@@ -25,7 +25,7 @@
            th:if="${#fields.hasErrors('equipementId')}"
            th:errors="*{equipementId}">Erreur équipement</p>
 
-        <label for="description">Description</label>
+        <label>Description</label>
         <textarea th:field="*{description}" rows="4"></textarea>
         <p class="message-erreur"
            th:if="${#fields.hasErrors('description')}"

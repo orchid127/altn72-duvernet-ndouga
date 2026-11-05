@@ -3,6 +3,7 @@ package com.altn72duvernetndouga.modele;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 public class Utilisateur {

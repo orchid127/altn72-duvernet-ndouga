@@ -14,9 +14,9 @@
             <div class="search">
                 <input th:type="search" placeholder="rechercher un équipement" id="search"/>
                 <select name="station" id="stations">
-                    <option value="station 1">station 1</option>
-                    <option value="station 2">station 2</option>
+                    <option th:each="station : ${stations}" th:text="station.nomStation" th:value="station.nomStation">station</option>
                 </select>
+                
             </div>
             <div class="grid-incidents">
                 <div th:each="i : ${lstIncidents}" class="box-incident">

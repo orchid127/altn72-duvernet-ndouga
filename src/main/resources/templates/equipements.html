@@ -13,18 +13,19 @@
             <div>
                 <h1>équipements</h1>
                 <p>espace pour surveiller chaque équipement</p>
-                <div class="search">
-                    <input th:type="search" placeholder="rechercher un équipement" id="search"/>
-                    <select name="station" id="stations">
-                        <option value="station 1">station 1</option>
-                        <option value="station 2">station 2</option>
+                <form th:action="@{/}" method="get" class="search">
+                    <input name="search" type="search" th:value="${search}" placeholder="rechercher un équipement par référence" id="searchbar"/>
+
+                    <select name="stationId" id="stations" onchange="this.form.submit()">
+                        <option value="">filtrer par station</option>
+                        <option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.nomStation}" th:selected="${station.id == selectedStationId}">station</option>
                     </select>
-                </div>
+                </form>
             </div>
             <div class="tableau-equipements">
                 <div class="equipement-box" th:each="e : ${equipements}">
                     <div class="box-title">
-                        <p>equipement #<span th:text="${e.id}">0</span></p>
+                        <p>equipement #<span th:text="${e.reference}">0</span></p>
                     </div>
                     <div class="box-content">
                         <p th:text="${e.description}">description</p>

@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ConnexionTest {
 
-    private static final String MOT_DE_PASSE_TEST = "motdepasse-test";
+    private static final String MOT_DE_PASSE_TEST = "1234";
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,6 +43,7 @@ class ConnexionTest {
     void creerUtilisateurDeTest() {
         utilisateurRepository.deleteAll();
         String motDePasseHache = encodeurMotDePasse.encode(MOT_DE_PASSE_TEST);
+        System.out.println("motDePasseHache: " + motDePasseHache);
         utilisateurRepository.save(new Utilisateur(1, motDePasseHache, "Camille", "RESPONSABLE"));
     }
 
