@@ -34,6 +34,18 @@ public class Incident {
     @Column(name = "date_resolution")
     private Instant dateResolution;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_evaluation")
+    private Evaluation idEvaluation;
+
+    public Evaluation getIdEvaluation() {
+        return idEvaluation;
+    }
+
+    public void setIdEvaluation(Evaluation idEvaluation) {
+        this.idEvaluation = idEvaluation;
+    }
+
 
     protected Incident() {
     }

@@ -21,6 +21,31 @@ main {
     gap: 1rem;
 }
 
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    font-size: 1.5em;
+}
+
+.search input {
+    flex: 1;
+    border: 1px solid #68CFAD;
+    border-radius: 0;
+    color: #1ea377;
+    padding: 1rem;
+}
+
+.search select {
+    padding: 1rem;
+    border: 1px solid #f665de;
+    border-radius: 0;
+    color: #f665de;
+    background-color: white;
+}
+
 .grid-incidents {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

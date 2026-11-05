@@ -40,6 +40,10 @@ main {
     color: #982d7b;
     background-color: #f665de52;
 }
+
+.evaluation-form {
+    padding: 0;
+}
 .grid-incidents {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
